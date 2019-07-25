@@ -43,7 +43,7 @@ namespace TestWebApplication.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_GetAllStudentData_Result>("usp_GetAllStudentData");
         }
     
-        public virtual int usp_SaveStudent(string firstName, string lastName, string email, string adress, Nullable<System.DateTime> enrollDate, Nullable<int> departmentId)
+        public virtual int usp_SaveStudent(string firstName, string lastName, string email, string address, Nullable<System.DateTime> enrollDate, Nullable<int> departmentId)
         {
             var firstNameParameter = firstName != null ?
                 new ObjectParameter("firstName", firstName) :
@@ -57,9 +57,9 @@ namespace TestWebApplication.Models
                 new ObjectParameter("email", email) :
                 new ObjectParameter("email", typeof(string));
     
-            var adressParameter = adress != null ?
-                new ObjectParameter("adress", adress) :
-                new ObjectParameter("adress", typeof(string));
+            var addressParameter = address != null ?
+                new ObjectParameter("address", address) :
+                new ObjectParameter("address", typeof(string));
     
             var enrollDateParameter = enrollDate.HasValue ?
                 new ObjectParameter("enrollDate", enrollDate) :
@@ -69,7 +69,7 @@ namespace TestWebApplication.Models
                 new ObjectParameter("departmentId", departmentId) :
                 new ObjectParameter("departmentId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_SaveStudent", firstNameParameter, lastNameParameter, emailParameter, adressParameter, enrollDateParameter, departmentIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_SaveStudent", firstNameParameter, lastNameParameter, emailParameter, addressParameter, enrollDateParameter, departmentIdParameter);
         }
     
         public virtual int usp_SaveStudentListFromDataTable()
@@ -117,6 +117,35 @@ namespace TestWebApplication.Models
                 new ObjectParameter("departmentId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_UpdateStudent", idParameter, firstNameParameter, lastNameParameter, emailParameter, adressParameter, enrollDateParameter, departmentIdParameter);
+        }
+    
+        public virtual int usp_SaveStudent1(string firstName, string lastName, string email, string address, Nullable<System.DateTime> enrollDate, Nullable<int> departmentId)
+        {
+            var firstNameParameter = firstName != null ?
+                new ObjectParameter("firstName", firstName) :
+                new ObjectParameter("firstName", typeof(string));
+    
+            var lastNameParameter = lastName != null ?
+                new ObjectParameter("lastName", lastName) :
+                new ObjectParameter("lastName", typeof(string));
+    
+            var emailParameter = email != null ?
+                new ObjectParameter("email", email) :
+                new ObjectParameter("email", typeof(string));
+    
+            var addressParameter = address != null ?
+                new ObjectParameter("address", address) :
+                new ObjectParameter("address", typeof(string));
+    
+            var enrollDateParameter = enrollDate.HasValue ?
+                new ObjectParameter("enrollDate", enrollDate) :
+                new ObjectParameter("enrollDate", typeof(System.DateTime));
+    
+            var departmentIdParameter = departmentId.HasValue ?
+                new ObjectParameter("departmentId", departmentId) :
+                new ObjectParameter("departmentId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("usp_SaveStudent1", firstNameParameter, lastNameParameter, emailParameter, addressParameter, enrollDateParameter, departmentIdParameter);
         }
     }
 }

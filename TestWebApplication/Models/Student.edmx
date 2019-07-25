@@ -4,16 +4,16 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="T_STUDENT">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" Nullable="false" />
-          <Property Name="FIRST_NAME" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="LAST_NAME" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="EMAIL" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="ADRESS" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="FIRST_NAME" Type="nchar" MaxLength="100" />
+          <Property Name="LAST_NAME" Type="nchar" MaxLength="100" />
+          <Property Name="EMAIL" Type="nchar" MaxLength="100" />
+          <Property Name="ADRESS" Type="nchar" MaxLength="200" />
           <Property Name="ENROLMENT_DATE" Type="date" Nullable="false" />
           <Property Name="DEPARTMENT_ID" Type="int" Nullable="false" />
         </EntityType>
@@ -25,7 +25,15 @@
           <Parameter Name="firstName" Type="varchar" Mode="In" />
           <Parameter Name="lastName" Type="varchar" Mode="In" />
           <Parameter Name="email" Type="varchar" Mode="In" />
-          <Parameter Name="adress" Type="varchar" Mode="In" />
+          <Parameter Name="address" Type="varchar" Mode="In" />
+          <Parameter Name="enrollDate" Type="datetime" Mode="In" />
+          <Parameter Name="departmentId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="usp_SaveStudent1" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="firstName" Type="varchar" Mode="In" />
+          <Parameter Name="lastName" Type="varchar" Mode="In" />
+          <Parameter Name="email" Type="varchar" Mode="In" />
+          <Parameter Name="address" Type="varchar" Mode="In" />
           <Parameter Name="enrollDate" Type="datetime" Mode="In" />
           <Parameter Name="departmentId" Type="int" Mode="In" />
         </Function>
@@ -45,8 +53,7 @@
         <EntityContainer Name="ModelStoreContainer">
           <EntitySet Name="T_STUDENT" EntityType="Self.T_STUDENT" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -55,30 +62,30 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="FIRST_NAME" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="LAST_NAME" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="EMAIL" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="ADRESS" Type="String" MaxLength="200" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="FIRST_NAME" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="LAST_NAME" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="EMAIL" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="ADRESS" Type="String" MaxLength="200" FixedLength="true" Unicode="true" />
           <Property Name="ENROLMENT_DATE" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="DEPARTMENT_ID" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="T_STUDENT" EntityType="Self.T_STUDENT" />
           <FunctionImport Name="usp_DeleteStudent">
-            <Parameter Name="id" Mode="In" Type="Int32" />
+          <Parameter Name="id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="usp_GetAllStudentData" ReturnType="Collection(Model.usp_GetAllStudentData_Result)" />
           <FunctionImport Name="usp_SaveStudent">
             <Parameter Name="firstName" Mode="In" Type="String" />
             <Parameter Name="lastName" Mode="In" Type="String" />
             <Parameter Name="email" Mode="In" Type="String" />
-            <Parameter Name="adress" Mode="In" Type="String" />
+            <Parameter Name="address" Mode="In" Type="String" />
             <Parameter Name="enrollDate" Mode="In" Type="DateTime" />
             <Parameter Name="departmentId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="usp_SaveStudentListFromDataTable" />
           <FunctionImport Name="usp_SaveStudentListFromXml">
-            <Parameter Name="xmlData" Mode="In" Type="String" />
+          <Parameter Name="xmlData" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="usp_UpdateStudent">
             <Parameter Name="id" Mode="In" Type="Int32" />
@@ -86,6 +93,14 @@
             <Parameter Name="lastName" Mode="In" Type="String" />
             <Parameter Name="email" Mode="In" Type="String" />
             <Parameter Name="adress" Mode="In" Type="String" />
+            <Parameter Name="enrollDate" Mode="In" Type="DateTime" />
+            <Parameter Name="departmentId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="usp_SaveStudent1">
+            <Parameter Name="firstName" Mode="In" Type="String" />
+            <Parameter Name="lastName" Mode="In" Type="String" />
+            <Parameter Name="email" Mode="In" Type="String" />
+            <Parameter Name="address" Mode="In" Type="String" />
             <Parameter Name="enrollDate" Mode="In" Type="DateTime" />
             <Parameter Name="departmentId" Mode="In" Type="Int32" />
           </FunctionImport>
@@ -136,6 +151,7 @@
           <FunctionImportMapping FunctionImportName="usp_SaveStudentListFromDataTable" FunctionName="Model.Store.usp_SaveStudentListFromDataTable" />
           <FunctionImportMapping FunctionImportName="usp_SaveStudentListFromXml" FunctionName="Model.Store.usp_SaveStudentListFromXml" />
           <FunctionImportMapping FunctionImportName="usp_UpdateStudent" FunctionName="Model.Store.usp_UpdateStudent" />
+          <FunctionImportMapping FunctionImportName="usp_SaveStudent1" FunctionName="Model.Store.usp_SaveStudent1" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -150,7 +166,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />

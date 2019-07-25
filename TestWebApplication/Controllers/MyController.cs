@@ -31,7 +31,7 @@ namespace StoredProcedureMvc.Controllers
             return Json(list, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult SaveStudent(T_STUDENT student)
+        public JsonResult SaveStudent(T_STUDENT student)
         {
             _db.usp_SaveStudent(student.FIRST_NAME, student.LAST_NAME, student.EMAIL,
                 student.ADRESS, student.ENROLMENT_DATE, student.DEPARTMENT_ID);
@@ -45,14 +45,14 @@ namespace StoredProcedureMvc.Controllers
             var list = _db.usp_GetAllStudentData().ToList();
             return Json(list, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult DeleteStudent(T_STUDENT student)
+        public JsonResult DeleteStudent(T_STUDENT student)
         {
             _db.usp_DeleteStudent(student.ID);
             var list = _db.usp_GetAllStudentData().ToList();
             return Json(list, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult SaveStudentAsXml(List<T_STUDENT> students)
+        public JsonResult SaveStudentAsXml(List<T_STUDENT> students)
         {
             var doc = new XElement("STUDENTS");
             foreach (var item in students)
@@ -71,7 +71,7 @@ namespace StoredProcedureMvc.Controllers
             var list = _db.usp_GetAllStudentData().ToList();
             return Json(list, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult SaveStudentAsTable(List<T_STUDENT> students)
+        public JsonResult SaveStudentAsTable(List<T_STUDENT> students)
         {
             var stdDt = new DataTable();
             stdDt.Columns.Add("FIRST_NAME", typeof(string));
